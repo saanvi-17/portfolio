@@ -1,26 +1,194 @@
 @import "tailwindcss";
 
+/* Enable class-based dark mode: `dark:` applies under an .dark ancestor. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Warm/earthy placeholder tokens — still used by the older BreakingSection/Artworks.
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4efe6; /* warm cream */
+  --foreground: #2b2722; /* dark espresso */
+  --muted: #6f675c; /* muted brown for secondary text */
+
+  --terracotta: #e08a4b;
+  --olive: #6b7a4f;
+  --clay: #c96f4a;
+  --sage: #aeb88c;
+  --cream-card: #efe7d7;
+  --line: #e3dccd; /* subtle grid / hairline */
+
+  /* Clean palette — the current sections. Every value flips under .dark below. */
+  --paper: #ffffff; /* page / section background */
+  --card: #ffffff; /* elevated card / pill background */
+  --ink: #000000; /* primary text */
+  --soft: #665e54; /* muted secondary text */
+  --soft2: #8a8278; /* tertiary muted text */
+  --faint: #a8a29a; /* arrows, timeline, faint marks */
+  --eyebrow: #3a3733; /* eyebrow / label text */
+  --edge: #c6c2ba; /* card borders */
+  --hair: #e0dbd2; /* hairline dividers */
+  --chip: #f2f2f2; /* grey pill background */
+  --chip-hover: #f7f7f7;
+  --btn: #000000; /* primary CTA bg */
+  --btn-ink: #ffffff; /* primary CTA text */
+  --btn-hover: #222222;
+  --tip: #111111; /* tooltip bg */
+  --tip-ink: #ffffff; /* tooltip text */
+  --band: #c96f4a; /* BreakingSection clay band */
+  --band-ink: #f4efe6;
+  --accent-rose: #fdeef0; /* project tints (Work) */
+  --accent-green: #eef4ef;
+  --accent-blue: #eef0f6;
+  --accent-sand: #f3f1ea;
+  --sp-card-green: #eef2ee; /* Side Projects card tints */
+  --sp-card-sand: #f4eee7;
+  --sp-card-blue: #eef0f5;
+  --sp-screen-green: #cfe0d4; /* phone-mock screen tints */
+  --sp-screen-sand: #e6d8c6;
+  --sp-screen-blue: #d6dcec;
+  --sp-edge: #e7e2d9;
+  --page-mat: #f3ece1; /* journal page mat behind the images */
+}
+
+.dark {
+  --paper: #15120d;
+  --card: #1e1914;
+  --ink: #f4efe7;
+  --soft: #a79d8e;
+  --soft2: #978c7d;
+  --faint: #756d60;
+  --eyebrow: #cabfb0;
+  --edge: #393229;
+  --hair: #2b261e;
+  --chip: #272118;
+  --chip-hover: #2f291f;
+  --btn: #efe9de;
+  --btn-ink: #15120d;
+  --btn-hover: #dcd3c5;
+  --tip: #efe9de;
+  --tip-ink: #15120d;
+  --band: #3a2820;
+  --band-ink: #ece3d3;
+  --accent-rose: #271c1f;
+  --accent-green: #15201a;
+  --accent-blue: #181b25;
+  --accent-sand: #211d16;
+  --sp-card-green: #16201a;
+  --sp-card-sand: #211d16;
+  --sp-card-blue: #181b25;
+  --sp-screen-green: #24332a;
+  --sp-screen-sand: #2f2a22;
+  --sp-screen-blue: #242a39;
+  --sp-edge: #322c24;
+  --page-mat: #211d16;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-terracotta: var(--terracotta);
+  --color-olive: var(--olive);
+  --color-clay: var(--clay);
+  --color-sage: var(--sage);
+  --color-cream-card: var(--cream-card);
+  --color-line: var(--line);
+
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-soft: var(--soft);
+  --color-soft2: var(--soft2);
+  --color-faint: var(--faint);
+  --color-eyebrow: var(--eyebrow);
+  --color-edge: var(--edge);
+  --color-hair: var(--hair);
+  --color-chip: var(--chip);
+  --color-chip-hover: var(--chip-hover);
+  --color-btn: var(--btn);
+  --color-btn-ink: var(--btn-ink);
+  --color-btn-hover: var(--btn-hover);
+  --color-tip: var(--tip);
+  --color-tip-ink: var(--tip-ink);
+  --color-band: var(--band);
+  --color-band-ink: var(--band-ink);
+  --color-accent-rose: var(--accent-rose);
+  --color-accent-green: var(--accent-green);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-sand: var(--accent-sand);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  /* Lenis handles smoothing; keep native smooth off to avoid conflicts */
+  scroll-behavior: auto;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* Ease the light↔dark flip (the lamp "dimming"). Disabled under reduced motion below. */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 0.4s;
+  transition-timing-function: ease;
+}
+
+/* Faint grid-paper backdrop, like the references */
+.grid-paper {
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: center;
+}
+
+/* Lenis recommended styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Gentle idle float for the Experience polaroids (disabled under reduced motion below). */
+@keyframes expFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+/* Respect reduced motion globally as a safety net */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+
+
