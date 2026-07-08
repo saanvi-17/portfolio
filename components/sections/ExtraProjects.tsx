@@ -5,25 +5,27 @@ const poppins = { fontFamily: "var(--font-poppins)" };
 const bricolage = { fontFamily: "var(--font-bricolage)", fontWeight: 600 };
 
 // Lightweight explorations — kept separate from the main Work case studies.
-// TODO(Saanvi): swap the faux phone screens for real screenshots (add `screen`
-// image paths) and link each card to a write-up if/when they exist.
+// Each card can link out (`href`) and show a real portrait screenshot inside
+// the phone frame (`screen`); cards without a `screen` fall back to the mock.
 type Side = {
   title: string;
   desc: string;
   tags: string[];
   accent: string; // card background
   tint: string; // phone-screen accent
-  href?: string; // optional link to a full case study
+  href?: string; // optional link (internal route or external write-up)
+  screen?: string; // optional real screenshot shown inside the phone frame
 };
 
 const sideProjects: Side[] = [
   {
-    title: "UN Time Odyssey — booking travel through time",
-    desc: "A conceptual time-travel booking app with holographic memories and smartwatch sync.",
+    title: "UN Time Odyssey — travel through time",
+    desc: "Time-travel booking app with holographic memories and smartwatch sync",
     tags: ["Concept", "Self-initiated"],
     accent: "var(--sp-card-sand)",
     tint: "#e6d8c6",
-    href: "/work/time-odyssey",
+    href: "https://medium.com/@saanvijain1999/un-time-odyssey-a-time-travel-app-56ebb8fe5b12",
+    screen: "/side/time-odyssey.jpg",
   },
   {
     title: "WhatsApp Business — redesign",
@@ -31,56 +33,72 @@ const sideProjects: Side[] = [
     tags: ["Mobile", "Concept"],
     accent: "var(--sp-card-green)",
     tint: "#cfe0d4",
+    href: "https://medium.com/@saanvijain1999/revisiting-the-whatsapp-business-redesign-350f58eb7d26",
+    screen: "/side/whatsapp.jpg",
   },
   {
-    title: "Shopify — storefront revamp",
-    desc: "A cleaner, faster product-to-cart flow.",
-    tags: ["E-commerce", "Web"],
-    accent: "var(--sp-card-sand)",
-    tint: "#e6d8c6",
-  },
-  {
-    title: "App autopsy — Paytm",
-    desc: "Breaking down what works and what quietly gets in the way.",
-    tags: ["Teardown"],
+    title: "Paytm Metro — e-ticket redesign",
+    desc: "Reimagining the metro e-ticket booking experience.",
+    tags: ["Mobile", "Concept"],
     accent: "var(--sp-card-blue)",
     tint: "#d6dcec",
+    href: "https://medium.com/@saanvijain1999/reimagining-paytms-metro-e-ticket-experience-255b12fa8a34",
+    screen: "/side/paytm.jpg",
   },
 ];
 
-function PhoneMock({ tint }: { tint: string }) {
+function PhoneMock({
+  tint,
+  screen,
+  title,
+}: {
+  tint: string;
+  screen?: string;
+  title?: string;
+}) {
   return (
     <div className="pointer-events-none absolute bottom-0 left-1/2 w-[190px] -translate-x-1/2 translate-y-[30%] transition-transform duration-500 ease-out group-hover:translate-y-[12%]">
       <div className="rounded-t-[28px] bg-[#141414] p-2.5 shadow-[0_-10px_30px_rgba(0,0,0,0.18)]">
         <div className="overflow-hidden rounded-t-[20px] bg-white" style={{ height: 300 }}>
-          <div className="flex items-center justify-between px-4 pb-1 pt-2 text-[8px] font-medium text-[#9a9a9a]">
-            <span>9:41</span>
-            <span>●●●</span>
-          </div>
-          <div className="px-4 pt-1">
-            <div
-              className="h-3 w-20 rounded-full"
-              style={{ backgroundColor: tint }}
+          {screen ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={screen}
+              alt={title ?? ""}
+              className="h-full w-full object-cover object-top"
             />
-          </div>
-          <div
-            className="mx-4 mt-3 h-24 rounded-xl"
-            style={{ backgroundColor: tint }}
-          />
-          <div className="mx-4 mt-3 space-y-2">
-            <div className="h-2.5 w-full rounded-full bg-[#ededed]" />
-            <div className="h-2.5 w-2/3 rounded-full bg-[#ededed]" />
-          </div>
-          <div className="mx-4 mt-3 h-16 rounded-xl bg-[#f4f4f4]" />
-          <div className="mt-4 flex justify-around border-t border-[#f1f1f1] pt-2.5">
-            {[0, 1, 2].map((i) => (
+          ) : (
+            <>
+              <div className="flex items-center justify-between px-4 pb-1 pt-2 text-[8px] font-medium text-[#9a9a9a]">
+                <span>9:41</span>
+                <span>●●●</span>
+              </div>
+              <div className="px-4 pt-1">
+                <div
+                  className="h-3 w-20 rounded-full"
+                  style={{ backgroundColor: tint }}
+                />
+              </div>
               <div
-                key={i}
-                className="size-4 rounded-full"
-                style={{ backgroundColor: i === 0 ? tint : "#e8e8e8" }}
+                className="mx-4 mt-3 h-24 rounded-xl"
+                style={{ backgroundColor: tint }}
               />
-            ))}
-          </div>
+              <div className="mx-4 mt-3 space-y-2">
+                <div className="h-2.5 w-full rounded-full bg-[#ededed]" />
+                <div className="h-2.5 w-2/3 rounded-full bg-[#ededed]" />
+              </div>
+              <div className="mx-4 mt-3 h-16 rounded-xl bg-[#f4f4f4]" />
+              <div className="mt-4 flex justify-around border-t border-[#f1f1f1] pt-2.5">
+                {[0, 1, 2].map((i) => (
+                  <div
+                    key={i}
+                    className="size-4 rounded-full"
+                    style={{ backgroundColor: i === 0 ? tint : "#e8e8e8" }}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -141,16 +159,30 @@ export default function ExtraProjects() {
                     {p.desc}
                   </p>
                 </div>
-                <PhoneMock tint={p.tint} />
+                <PhoneMock tint={p.tint} screen={p.screen} title={p.title} />
               </article>
             );
+
+            const isExternal = p.href?.startsWith("http");
 
             return (
               <RevealItem key={p.title}>
                 {p.href ? (
-                  <Link href={p.href} aria-label={`View ${p.title}`} className="block">
-                    {card}
-                  </Link>
+                  isExternal ? (
+                    <a
+                      href={p.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`Read ${p.title}`}
+                      className="block"
+                    >
+                      {card}
+                    </a>
+                  ) : (
+                    <Link href={p.href} aria-label={`View ${p.title}`} className="block">
+                      {card}
+                    </Link>
+                  )
                 ) : (
                   card
                 )}

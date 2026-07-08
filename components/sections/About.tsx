@@ -29,9 +29,6 @@ type Segment = {
 
 const PARAGRAPHS: Segment[][] = [
   [
-    { img: "/about/badge-design.png", alt: "Design", badge: true },
-    { t: " found me before I had a word for it.", strike: true },
-    { br: true },
     {
       t: "I'm a self taught product designer, four years in. I've shipped work across D2C wellness brand ",
     },
@@ -54,6 +51,9 @@ const PARAGRAPHS: Segment[][] = [
     },
   ],
   [
+    { img: "/about/badge-design.png", alt: "Design", badge: true },
+    { t: " found me before I had a word for it.", strike: true },
+    { br: true },
     { t: "Away from screens, I paint " },
     {
       img: "/about/paint.png",

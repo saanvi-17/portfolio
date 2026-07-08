@@ -46,6 +46,7 @@ function Page({ src, side }: { src: string; side: "left" | "right" }) {
         left: side === "left" ? 0 : "50%",
         transform: "translateZ(0)",
         backfaceVisibility: "hidden",
+        WebkitBackfaceVisibility: "hidden",
       }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -58,8 +59,37 @@ export default function Journals() {
   const [spread, setSpread] = useState(0);
   const [flip, setFlip] = useState<null | "next" | "prev">(null);
   const reduced = useReducedMotion();
-  const dragX = useRef<number | null>(null);
   const S = spreads.length;
+
+  // Tracks which spread image URLs have finished loading (or errored), so
+  // go() can tell whether the images it's about to swap in are actually
+  // ready, and so the preload effect below doesn't re-fetch what's cached.
+  const loadedRef = useRef<Set<string>>(new Set());
+
+  // Warm the previous/current/next spread's images whenever `spread`
+  // changes, so by the time a user can click to a neighbor its bytes are
+  // already cached — go() already blocks re-flipping for ~900ms, and users
+  // typically dwell far longer than that before flipping again.
+  useEffect(() => {
+    const targets = [spreads[spread - 1], spreads[spread], spreads[spread + 1]].filter(
+      (s): s is Spread => Boolean(s)
+    );
+    const urls = targets.flatMap((s) => [s.L, s.R]);
+    const imgs = urls
+      .filter((src) => !loadedRef.current.has(src))
+      .map((src) => {
+        const img = new Image();
+        img.onload = img.onerror = () => loadedRef.current.add(src);
+        img.src = src;
+        return img;
+      });
+    return () => {
+      imgs.forEach((img) => {
+        img.onload = null;
+        img.onerror = null;
+      });
+    };
+  }, [spread]);
 
   const cur = spreads[spread];
   const atStart = spread <= 0;
@@ -73,7 +103,29 @@ export default function Journals() {
       setSpread((s) => s + (dir === "next" ? 1 : -1));
       return;
     }
+    // Drive the page change off a deterministic timer keyed to THIS flip's
+    // direction (matches the 0.9s leaf animation), rather than framer's
+    // onAnimationComplete — which wasn't reliably advancing the spread.
+    // Normally resolves at exactly MIN_MS (the target images are already
+    // preloaded by the effect above); only polls past that, capped at
+    // +MAX_EXTRA_MS, if a neighbor's images somehow aren't ready yet.
     setFlip(dir);
+    const target = dir === "next" ? spreads[spread + 1] : spreads[spread - 1];
+    const targetSrcs = [target.L, target.R];
+    const start = Date.now();
+    const MIN_MS = 900;
+    const MAX_EXTRA_MS = 900;
+    const settle = () => {
+      const elapsed = Date.now() - start;
+      const ready = targetSrcs.every((src) => loadedRef.current.has(src));
+      if (elapsed >= MIN_MS && (ready || elapsed >= MIN_MS + MAX_EXTRA_MS)) {
+        setSpread((s) => s + (dir === "next" ? 1 : -1));
+        setFlip(null);
+        return;
+      }
+      window.setTimeout(settle, elapsed < MIN_MS ? MIN_MS - elapsed : 100);
+    };
+    window.setTimeout(settle, MIN_MS);
   }
 
   useEffect(() => {
@@ -123,7 +175,7 @@ export default function Journals() {
             className="mt-4 text-center text-[16px] leading-[1.7] text-soft sm:text-[18px] lg:text-left"
             style={poppins}
           >
-            I keep a travel journal wherever I go. Flip through a few spreads.
+            I keep a travel journal wherever I go. Flip through a few spreads →
           </p>
         </Reveal>
 
@@ -144,19 +196,12 @@ export default function Journals() {
               aspectRatio: "760 / 543",
               perspective: "2200px",
               transform: "rotate(-3deg)",
+              touchAction: "pan-y",
             }}
-            onPointerDown={(e) => (dragX.current = e.clientX)}
-            onPointerUp={(e) => {
-              if (dragX.current == null) return;
-              const dx = e.clientX - dragX.current;
-              dragX.current = null;
-              if (dx < -40) go("next");
-              else if (dx > 40) go("prev");
-              else {
-                // treat as a click on a half
-                const rect = e.currentTarget.getBoundingClientRect();
-                go(e.clientX - rect.left < rect.width / 2 ? "prev" : "next");
-              }
+            onClick={(e) => {
+              // Tap the left or right half to flip.
+              const rect = e.currentTarget.getBoundingClientRect();
+              go(e.clientX - rect.left < rect.width / 2 ? "prev" : "next");
             }}
           >
             {/* Static pages underneath */}
@@ -185,10 +230,6 @@ export default function Journals() {
                 initial={{ rotateY: flip === "next" ? 0 : -180 }}
                 animate={{ rotateY: flip === "next" ? -180 : 0 }}
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                onAnimationComplete={() => {
-                  setSpread((s) => s + (flip === "next" ? 1 : -1));
-                  setFlip(null);
-                }}
               >
                 <Face src={frontImg} />
                 <Face src={backImg} back />

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
+import DeviceShot from "@/components/ui/DeviceShot";
 import { projects, type Project } from "@/lib/projects";
 
 const poppins = { fontFamily: "var(--font-poppins)" };
@@ -103,15 +104,21 @@ function ProjectCard({ p, reversed }: { p: Project; reversed: boolean }) {
         <Link
           href={`/work/${p.slug}`}
           aria-label={`View ${p.title}`}
-          className={`group relative block h-[220px] overflow-hidden rounded-lg border border-edge sm:h-[300px] lg:h-auto lg:min-h-0 lg:flex-1 lg:rounded-[20px] ${p.accent}`}
+          className={`group relative block h-[400px] overflow-hidden rounded-lg border border-edge sm:h-[460px] lg:h-auto lg:min-h-0 lg:flex-1 lg:rounded-[20px] ${p.accent}`}
         >
-          {p.thumb && (
-            <img
-              src={p.thumb}
-              alt=""
-              className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-            />
-          )}
+          {p.shot && p.device ? (
+            <span className="absolute inset-0 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+              <DeviceShot src={p.shot} device={p.device} title={p.title} />
+            </span>
+          ) : p.thumb ? (
+            <span className="absolute inset-0 flex items-center justify-center p-5 sm:p-7 lg:p-10">
+              <img
+                src={p.thumb}
+                alt=""
+                className="max-h-full max-w-full rounded-lg object-contain shadow-[0_12px_34px_rgba(0,0,0,0.14)] transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              />
+            </span>
+          ) : null}
         </Link>
         <Link
           href={`/work/${p.slug}`}

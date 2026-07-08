@@ -7,10 +7,14 @@ const poppins = { fontFamily: "var(--font-poppins)" };
 const bricolage = { fontFamily: "var(--font-bricolage)", fontWeight: 600 };
 const HAIRLINE = "bg-hair";
 
+type Position = { role: string; period: string };
+
 type Role = {
   period: string;
   company: string;
   role: string;
+  /** Multiple positions at one company (LinkedIn-style progression). */
+  positions?: Position[];
   blurb: string;
   skills: string[];
   current?: boolean;
@@ -22,6 +26,10 @@ const experience: Role[] = [
     period: "Oct 2024 — Present",
     company: "Be Bodywise (Mosaic Wellness)",
     role: "Product Designer",
+    positions: [
+      { role: "Senior Product Designer", period: "Jun 2026 — Present · 1 mo" },
+      { role: "Product Designer", period: "Oct 2024 — Jun 2026 · 1 yr 9 mos" },
+    ],
     blurb:
       "Own end-to-end design for Be Bodywise — UX and visual work that lifts conversion and brand consistency, plus cross-brand experiments for Little Joys.",
     skills: ["Product Design", "User Research", "Webflow"],
@@ -231,12 +239,41 @@ export default function Experience() {
                     >
                       {r.company}
                     </h3>
-                    <p
-                      className="mt-0.5 text-[13px] text-soft2 lg:text-[14px]"
-                      style={poppins}
-                    >
-                      {r.role}
-                    </p>
+                    {r.positions ? (
+                      <div className="mt-1.5 flex flex-col gap-1.5">
+                        {r.positions.map((pos, pi) => (
+                          <div key={pos.role} className="flex items-baseline gap-2">
+                            <span
+                              aria-hidden
+                              className={`mt-1 size-1.5 shrink-0 self-start rounded-full ${
+                                pi === 0 ? "bg-faint" : "bg-edge"
+                              }`}
+                            />
+                            <div>
+                              <p
+                                className="text-[14px] text-ink lg:text-[15px]"
+                                style={{ fontFamily: "var(--font-poppins)", fontWeight: 600 }}
+                              >
+                                {pos.role}
+                              </p>
+                              <p
+                                className="text-[12px] text-soft2 lg:text-[13px]"
+                                style={poppins}
+                              >
+                                {pos.period}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p
+                        className="mt-0.5 text-[13px] text-soft2 lg:text-[14px]"
+                        style={poppins}
+                      >
+                        {r.role}
+                      </p>
+                    )}
 
                     <p
                       className="mt-2.5 max-w-[520px] text-[14px] leading-normal tracking-[0.32px] text-soft lg:text-[16px]"

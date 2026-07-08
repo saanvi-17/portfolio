@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 
 // Lottie player is client-only and heavy — load it lazily (footer is below the fold).
 const HeroLottie = dynamic(() => import("./HeroLottie"), { ssr: false });
@@ -93,8 +93,6 @@ function ResumeCard({ className }: { className?: string }) {
 
       {/* label — shared card-header style (Bricolage 16 / ink / top-left) */}
       <div className="absolute left-5 top-5 z-30 flex items-center gap-2">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/bento/resume/icon-resume.svg" alt="" className="size-[20px]" />
         <span
           className="text-[16px] leading-none"
           style={{ ...bricolage, color: on ? "#3a2e0a" : "var(--ink)" }}
@@ -271,7 +269,7 @@ function FolderArticleCard({ className }: { className?: string }) {
         className="absolute left-5 top-5 z-40 text-[16px] text-ink transition-colors hover:text-soft"
         style={bricolage}
       >
-        Writing ↗
+        Writing
       </a>
 
       {/* centred 340×294 stage — folder art positioned in px within it */}
@@ -442,6 +440,18 @@ function PhoneShowcase({ className }: { className?: string }) {
   const screenRef = useRef<HTMLDivElement>(null);
   const tapStart = useRef<{ x: number; y: number } | null>(null);
 
+  // Play the hero Lottie whenever the card is in view (any device) so it's
+  // never a blank gap — touch has no hover to trigger it, and hover detection
+  // is unreliable in emulators. Hover still adds the scroll interaction below.
+  const cardRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(cardRef, { amount: 0.3 });
+  // Desktop (real hover) keeps the hover-to-play delight; touch/mobile has no
+  // hover, so autoplay the banner while in view instead of a blank gap.
+  const [canHover, setCanHover] = useState(true);
+  useEffect(() => {
+    setCanHover(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }, []);
+
   function engage() {
     setEngaged(true);
     setArmed(true);
@@ -452,9 +462,11 @@ function PhoneShowcase({ className }: { className?: string }) {
   }
 
   const active = engaged && !reduced;
+  const lottieOn = (canHover ? engaged : inView) && !reduced;
 
   return (
     <div
+      ref={cardRef}
       className={`relative flex items-center justify-center overflow-hidden ${CARD} ${
         className ?? ""
       }`}
@@ -507,12 +519,12 @@ function PhoneShowcase({ className }: { className?: string }) {
               className="block w-full select-none"
             />
             {/* hero banner (behind the cards); animates on hover */}
-            {armed && (
+            {(armed || (!canHover && inView)) && (
               <div
                 className="absolute left-0 right-0 z-10 aspect-[1080/900] overflow-hidden"
                 style={{ top: HERO_TOP }}
               >
-                <HeroLottie playing={active} />
+                <HeroLottie playing={lottieOn} />
               </div>
             )}
             {/* product cards, layered in front of the banner */}

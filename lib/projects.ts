@@ -24,6 +24,10 @@ export type Project = {
   accent: string;
   /** Optional real thumbnail (swapped in when art lands). */
   thumb?: string;
+  /** Full-length screenshot shown in a scroll-panning device frame. */
+  shot?: string;
+  /** Device frame for `shot`: "phone" for mobile screens, "browser" for web. */
+  device?: "phone" | "browser";
   role: string;
   year: string;
   /** When true, shown under "Side Projects" instead of "Selected Work". */
@@ -82,6 +86,8 @@ export const projects: Project[] = [
       { value: "2", label: "variants A/B tested" },
     ],
     accent: "bg-accent-green",
+    device: "phone",
+    shot: "/work/shots/bodywise.jpg",
     role: "Product Designer · Mosaic Wellness",
     year: "2025",
     caseStudy: {
@@ -342,6 +348,8 @@ export const projects: Project[] = [
       { value: "Web + Mobile", label: "design system" },
     ],
     accent: "bg-accent-blue",
+    device: "browser",
+    shot: "/work/shots/auzmor.jpg",
     role: "Product Designer · Auzmor",
     year: "2022 — 2023",
     caseStudy: {

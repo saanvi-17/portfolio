@@ -789,7 +789,7 @@ export default function Hero() {
                   margin: 0,
                 }}
               >
-                From messy first ideas to clean, polished products.
+                She is a Senior Product Designer with 4 years of experience.
               </p>
             </div>
           </div>
