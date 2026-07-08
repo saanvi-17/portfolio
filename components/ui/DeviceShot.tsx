@@ -30,54 +30,33 @@ export default function DeviceShot({
       const img = imgRef.current;
       if (!vp || !img) return;
 
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
       gsap.registerPlugin(ScrollTrigger);
       const onLoad = () => ScrollTrigger.refresh();
       if (!img.complete) img.addEventListener("load", onLoad, { once: true });
 
-      const trigger = {
-        trigger: vp,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-        invalidateOnRefresh: true,
-      } as const;
-
-      const mm = gsap.matchMedia();
-
-      // Desktop: pan via native scrollTop → also hand-scrollable.
-      mm.add(
-        "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
-        () => {
-          gsap.fromTo(
-            vp,
-            { scrollTop: 0 },
-            {
-              scrollTop: () => vp.scrollHeight - vp.clientHeight,
-              ease: "none",
-              scrollTrigger: trigger,
-            },
-          );
-        },
-      );
-
-      // Mobile / tablet: pan via transform, not scrollable by hand.
-      mm.add(
-        "(max-width: 1023px) and (prefers-reduced-motion: no-preference)",
-        () => {
-          gsap.fromTo(
-            img,
-            { y: 0 },
-            {
-              y: () => -Math.max(0, img.offsetHeight - vp.offsetHeight),
-              ease: "none",
-              scrollTrigger: trigger,
-            },
-          );
+      // Pan via the container's scrollTop on ALL breakpoints. Programmatic
+      // scrollTop works on overflow:hidden too, and — unlike transform-panning
+      // the image — it never promotes the huge screenshot to a composited GPU
+      // texture (which exhausted tile memory and froze painting on mobile).
+      gsap.fromTo(
+        vp,
+        { scrollTop: 0 },
+        {
+          scrollTop: () => Math.max(0, vp.scrollHeight - vp.clientHeight),
+          ease: "none",
+          scrollTrigger: {
+            trigger: vp,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
         },
       );
 
       return () => {
-        mm.revert();
         img.removeEventListener("load", onLoad);
       };
     },
