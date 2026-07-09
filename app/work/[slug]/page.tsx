@@ -260,12 +260,18 @@ function StoryBlock({ block }: { block: Block }) {
     );
   }
   if ("group" in block) {
+    const rowCls = block.row
+      ? "flex flex-row items-start justify-center gap-3 sm:gap-5"
+      : "flex flex-col items-center gap-5 sm:flex-row sm:items-stretch sm:justify-center sm:gap-5";
     return (
       <Reveal className="mt-8">
-        <div className="rounded-[20px] bg-chip p-5 sm:p-7">
-          <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-stretch sm:justify-center sm:gap-5">
+        <div className="rounded-[20px] bg-chip p-4 sm:p-7">
+          <div className={rowCls}>
             {block.group.map((m, i) => (
-              <div key={i} className="w-full max-w-[280px] sm:flex-1">
+              <div
+                key={i}
+                className={`${block.row ? "flex-1" : "w-full sm:flex-1"} max-w-[280px]`}
+              >
                 <MediaEl m={m} />
               </div>
             ))}
@@ -310,9 +316,20 @@ function MediaEl({
   );
 
   if (m.frame === "phone") {
+    const screen = m.scroll ? (
+      <div
+        data-lenis-prevent
+        className="overflow-y-auto rounded-[27px] bg-white [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        style={{ aspectRatio: "192 / 400" }}
+      >
+        {inner}
+      </div>
+    ) : (
+      <div className="overflow-hidden rounded-[27px] bg-white">{inner}</div>
+    );
     return (
       <div className="mx-auto w-full max-w-[300px] overflow-hidden rounded-[34px] border-[7px] border-[#0e0e10] bg-[#0e0e10] shadow-[0_18px_44px_rgba(0,0,0,0.20)]">
-        <div className="overflow-hidden rounded-[27px] bg-white">{inner}</div>
+        {screen}
       </div>
     );
   }

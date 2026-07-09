@@ -1,7 +1,14 @@
 export type Stat = { value: string; label: string };
 
-/** A single image or video, optionally shown inside a phone bezel. */
-export type Media = { src: string; video?: boolean; frame?: "phone" };
+/** A single image or video, optionally shown inside a phone bezel. When
+    `scroll` is set (phone frame only), the frame is a fixed height and the tall
+    screenshot scrolls manually inside it. */
+export type Media = {
+  src: string;
+  video?: boolean;
+  frame?: "phone";
+  scroll?: boolean;
+};
 
 /** Ordered content block for an article-style case study. */
 export type Block =
@@ -14,8 +21,9 @@ export type Block =
   | { list: string[] }
   | { img: string; cap?: string; frame?: "phone" }
   | { video: string; cap?: string; frame?: "phone"; poster?: string }
-  /** A responsive row of 2–3 images/videos (before/after, screen triptychs). */
-  | { group: Media[]; cap?: string }
+  /** A responsive row of 2–3 images/videos (before/after, screen triptychs).
+      `row` keeps them side-by-side on mobile instead of stacking. */
+  | { group: Media[]; cap?: string; row?: boolean }
   | { meta: { k: string; v: string }[] };
 
 export type Project = {
@@ -101,7 +109,14 @@ export const projects: Project[] = [
         {
           p: "For years, my wardrobe lived in my Notes app. Every time I bought an outfit I liked — or remembered a piece I owned but kept forgetting about — I’d take a photo and drop it into a note. It half-worked. I had the pictures, but no way to search them, organize them, or actually turn them into outfits. The photos piled up and nothing ever came of them.",
         },
-        // ② before/after — Notes folder ↔ Cove grid (group)
+        {
+          group: [
+            { src: "/work/cove/notes-before.webp", frame: "phone", scroll: true },
+            { src: "/work/shots/cove.jpg", frame: "phone", scroll: true },
+          ],
+          row: true,
+          cap: "Scroll each → before: a folder in my Notes app. After: Cove.",
+        },
         {
           p: "With Cove, I photograph a piece once and it’s cut out, catalogued, and ready to style into outfits. I didn’t have to imagine a user — I’d been doing this by hand, badly, for years.",
         },
@@ -138,7 +153,14 @@ export const projects: Project[] = [
         {
           p: "Instead of relying on an ML recommendation model, I chose transparent rules so users always understand why an outfit was suggested.",
         },
-        // [TEXT: iteration story, 1–2 sentences — Saanvi to write]
+        { sub: "What I cut" },
+        {
+          p: "My first version treated every upload like a form. Users named garments, assigned categories, occasions, and processing options before saving. After living with the product, I realized every extra decision slowed the one thing Cove needed to optimize: getting clothes into the wardrobe. I simplified the flow to capture first and let the product organize everything else.",
+        },
+        {
+          img: "/work/cove/iteration.webp",
+          cap: "The first version — every upload was a form.",
+        },
         // ④ empty state · diary stream · outfit generator (group of 3)
 
         { h: "The architecture decision" },
