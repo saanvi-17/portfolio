@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,6 +16,9 @@ export default function SmoothScroll({
 }: {
   children: React.ReactNode;
 }) {
+  const lenisRef = useRef<Lenis | null>(null);
+  const pathname = usePathname();
+
   useEffect(() => {
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -34,6 +38,7 @@ export default function SmoothScroll({
       wheelMultiplier: 0.9,
     });
 
+    lenisRef.current = lenis;
     lenis.on("scroll", ScrollTrigger.update);
 
     const onRaf = (time: number) => {
@@ -48,9 +53,20 @@ export default function SmoothScroll({
     return () => {
       gsap.ticker.remove(onRaf);
       lenis.destroy();
+      lenisRef.current = null;
       window.__lenis = undefined;
     };
   }, []);
+
+  // On route change, jump to the top so pages (e.g. case studies opened from
+  // partway down the home page) start at the top instead of Lenis's retained
+  // position. Skip when navigating to an in-page anchor — Nav handles the hash.
+  useEffect(() => {
+    if (window.location.hash) return;
+    const lenis = lenisRef.current;
+    if (lenis) lenis.scrollTo(0, { immediate: true });
+    else window.scrollTo(0, 0);
+  }, [pathname]);
 
   return <>{children}</>;
 }
