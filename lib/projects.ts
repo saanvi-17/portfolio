@@ -14,7 +14,7 @@ export type Media = {
 export type Block =
   | { h: string }
   | { sub: string }
-  | { p: string }
+  | { p: string; link?: { label: string; href: string } }
   /** Centered value-prop / highlight line. */
   | { lead: string }
   | { quote: string }
@@ -103,6 +103,7 @@ export const projects: Project[] = [
         },
         {
           p: "Cove turns a physical wardrobe into a searchable digital diary. It’s live on desktop and mobile.",
+          link: { label: "Try Cove", href: "https://cove-demo-three.vercel.app/" },
         },
 
         { h: "Where it Started" },

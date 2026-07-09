@@ -191,6 +191,19 @@ function StoryBlock({ block }: { block: Block }) {
         style={poppins}
       >
         {block.p}
+        {block.link && (
+          <>
+            {" "}
+            <a
+              href={block.link.href}
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium text-ink underline decoration-1 underline-offset-2 transition-opacity hover:opacity-70"
+            >
+              {block.link.label} <span aria-hidden>↗</span>
+            </a>
+          </>
+        )}
       </p>
     );
   }
