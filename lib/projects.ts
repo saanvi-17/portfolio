@@ -1,13 +1,21 @@
 export type Stat = { value: string; label: string };
 
+/** A single image or video, optionally shown inside a phone bezel. */
+export type Media = { src: string; video?: boolean; frame?: "phone" };
+
 /** Ordered content block for an article-style case study. */
 export type Block =
   | { h: string }
   | { sub: string }
   | { p: string }
+  /** Centered value-prop / highlight line. */
+  | { lead: string }
   | { quote: string }
   | { list: string[] }
-  | { img: string; cap?: string }
+  | { img: string; cap?: string; frame?: "phone" }
+  | { video: string; cap?: string; frame?: "phone"; poster?: string }
+  /** A responsive row of 2–3 images/videos (before/after, screen triptychs). */
+  | { group: Media[]; cap?: string }
   | { meta: { k: string; v: string }[] };
 
 export type Project = {
@@ -53,12 +61,12 @@ export const projects: Project[] = [
       "Catalogs your clothes so your outfits are finally findable and re-wearable.",
     tags: ["Personal Project", "Design + Build"],
     stats: [
-      { value: "0 → 1", label: "shipped solo" },
+      { value: "0 → 1", label: "shipped end to end" },
       { value: "Rs. 0", label: "per upload cost" },
     ],
     accent: "bg-accent-rose",
     role: "Design + Build",
-    year: "2025",
+    year: "2026",
     device: "phone",
     shot: "/work/shots/cove.jpg",
     caseStudy: {
@@ -73,7 +81,109 @@ export const projects: Project[] = [
         "Shipped solo and iterated on real use",
       ],
       outcome:
-        "A working 0→1 product, shipped solo, with zero per-upload cost thanks to on-device processing.",
+        "A working 0→1 product, shipped end to end, with zero per-upload cost thanks to on-device processing.",
+      cover: "/work/cove/hero.webp", // ① hero — baked browser + phone composite
+      story: [
+        {
+          meta: [
+            { k: "Year", v: "2026" },
+            { k: "Tools", v: "Designed with Figma, built with Claude Code" },
+          ],
+        },
+        {
+          lead: "One photo per piece · 3 steps from hanger to catalogued · $0/month to run",
+        },
+        {
+          p: "Cove turns a physical wardrobe into a searchable digital diary. It’s live on desktop and mobile.",
+        },
+
+        { h: "Where it started" },
+        {
+          p: "For years, my wardrobe lived in my Notes app. Every time I bought an outfit I liked — or remembered a piece I owned but kept forgetting about — I’d take a photo and drop it into a note. It half-worked. I had the pictures, but no way to search them, organize them, or actually turn them into outfits. The photos piled up and nothing ever came of them.",
+        },
+        // ② before/after — Notes folder ↔ Cove grid (group)
+        {
+          p: "With Cove, I photograph a piece once and it’s cut out, catalogued, and ready to style into outfits. I didn’t have to imagine a user — I’d been doing this by hand, badly, for years.",
+        },
+        {
+          p: "I designed and shipped Cove end to end: the product strategy, interaction model, information architecture, design system, and implementation. Claude Code generated production code from my specifications and tickets while I directed architecture, reviewed every implementation, and owned the product from idea to launch.",
+        },
+
+        { h: "The bet" },
+        {
+          p: "The real risk here wasn’t technical — it was behavioural. I’d tolerated the friction of the Notes app because it was mine, but no one else would. Most wardrobe apps lose users at the same point: the first few uploads. Ask someone to photograph, crop, and label forty items, and you’ll lose them by item three.",
+        },
+        { p: "So I designed the product around a single question:" },
+        { quote: "How quickly can one garment go from hanger to catalogued?" },
+        { p: "The answer became a simple three-step flow." },
+        { list: ["Photograph", "Automatic background removal", "One-tap save"] },
+        // ③ capture flow — the centrepiece (video)
+
+        { h: "The craft" },
+        { sub: "Designing the empty state" },
+        {
+          p: "A brand-new wardrobe is where these apps lose people. Cove opens with one clear action: capture your first item. No onboarding tour and no unnecessary decisions before users experience value.",
+        },
+        { sub: "A diary, not a filing cabinet" },
+        {
+          p: "Pieces accumulate in a searchable, filterable stream instead of a hierarchy of folders. Organization is the app’s responsibility, not the user’s.",
+        },
+        {
+          p: "To support both browsing and retrieval, I introduced category filters that let users quickly explore their wardrobe by garment type while keeping the diary-like experience intact.",
+        },
+        { sub: "Styling you can predict" },
+        {
+          p: "“Today’s Look Idea” generates outfits from saved pieces based on occasion, while Style Rules let users define constraints such as “Always include a bag.”",
+        },
+        {
+          p: "Instead of relying on an ML recommendation model, I chose transparent rules so users always understand why an outfit was suggested.",
+        },
+        // [TEXT: iteration story, 1–2 sentences — Saanvi to write]
+        // ④ empty state · diary stream · outfit generator (group of 3)
+
+        { h: "The architecture decision" },
+        { p: "Background removal became the core technical challenge." },
+        {
+          p: "Processing images locally was essentially free but unreliable on mobile. A fully cloud-based approach could have been more reliable but increased operating costs with every upload.",
+        },
+        {
+          p: "Instead of committing to one solution, I built a hybrid architecture. Desktop performs background removal locally whenever possible, while mobile falls back to the cloud when device constraints require it.",
+        },
+        {
+          p: "The result is a near-instant capture experience while keeping the product essentially free to operate.",
+        },
+        { sub: "Designing around imperfection" },
+        {
+          p: "Background-removal models occasionally leave imperfect edges. Instead of trying to eliminate every artifact, I designed the interface to absorb those imperfections.",
+        },
+        {
+          p: "Each garment is automatically placed on a consistent 2:3 portrait canvas with fixed framing, so every card aligns visually regardless of the original image. A warm cream background softens small artifacts, while consistent cropping prevents distracting shifts across the grid.",
+        },
+        {
+          quote: "The design absorbs the imperfections so the user never has to notice them.",
+        },
+        // ⑤ wardrobe grid — consistent cards (phone)
+
+        { h: "The systems layer" },
+        {
+          p: "I built a reusable design system covering typography, spacing, motion, color tokens, and shared components across desktop and mobile. Although created for a single product, the system was designed with the same scalability principles I’d apply when building design systems inside a larger organization.",
+        },
+        // ⑥ design tokens / component set (full-width Figma board)
+
+        { h: "Where it stands" },
+        {
+          p: "Cove is live and fully functional, but I haven’t launched it publicly yet.",
+        },
+        {
+          p: "Rather than optimizing for downloads, my first goal is to validate whether the problem resonates. I’m launching a demo site with a waitlist to understand genuine interest before investing in the operational costs of running background removal and AI services at scale.",
+        },
+        {
+          p: "The north-star metric isn’t how many clothes someone catalogs during their first week — that’s a one-time activity. The real signal is whether they’re still creating and saving outfits a month later.",
+        },
+        {
+          quote: "AI made it possible to build the product alone. Understanding the onboarding problem is what made it worth building.",
+        },
+      ],
     },
   },
   {

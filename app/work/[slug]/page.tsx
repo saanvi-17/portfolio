@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getProject, projects, type Block } from "@/lib/projects";
+import { getProject, projects, type Block, type Media } from "@/lib/projects";
 import Reveal from "@/components/ui/Reveal";
 
 const poppins = { fontFamily: "var(--font-poppins)" };
@@ -194,6 +194,18 @@ function StoryBlock({ block }: { block: Block }) {
       </p>
     );
   }
+  if ("lead" in block) {
+    return (
+      <Reveal>
+        <p
+          className="mt-6 text-center text-[15px] leading-[1.6] tracking-[0.3px] text-soft sm:text-[16px]"
+          style={{ ...poppins, fontWeight: 500 }}
+        >
+          {block.lead}
+        </p>
+      </Reveal>
+    );
+  }
   if ("quote" in block) {
     return (
       <blockquote
@@ -239,24 +251,89 @@ function StoryBlock({ block }: { block: Block }) {
       </dl>
     );
   }
+  if ("video" in block) {
+    return (
+      <Reveal className="mt-8">
+        <MediaEl m={{ src: block.video, video: true, frame: block.frame }} poster={block.poster} />
+        {block.cap && <Caption>{block.cap}</Caption>}
+      </Reveal>
+    );
+  }
+  if ("group" in block) {
+    return (
+      <Reveal className="mt-8">
+        <div className="rounded-[20px] bg-chip p-5 sm:p-7">
+          <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-stretch sm:justify-center sm:gap-5">
+            {block.group.map((m, i) => (
+              <div key={i} className="w-full max-w-[280px] sm:flex-1">
+                <MediaEl m={m} />
+              </div>
+            ))}
+          </div>
+        </div>
+        {block.cap && <Caption>{block.cap}</Caption>}
+      </Reveal>
+    );
+  }
   // image
   return (
     <Reveal className="mt-8">
-      <figure className="overflow-hidden rounded-[16px] border border-edge">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={block.img} alt={block.cap ?? ""} className="w-full" loading="lazy" />
-      </figure>
-      {block.cap && (
-        <figcaption
-          className="mt-2 text-center text-[13px] text-faint"
-          style={poppins}
-        >
-          {block.cap}
-        </figcaption>
-      )}
+      <MediaEl m={{ src: block.img, frame: block.frame }} alt={block.cap} />
+      {block.cap && <Caption>{block.cap}</Caption>}
     </Reveal>
   );
 }
+
+/** A single image or video, optionally wrapped in a soft phone bezel. */
+function MediaEl({
+  m,
+  alt,
+  poster,
+}: {
+  m: Media;
+  alt?: string;
+  poster?: string;
+}) {
+  const inner = m.video ? (
+    <video
+      src={m.src}
+      poster={poster}
+      className="block w-full"
+      autoPlay
+      muted
+      loop
+      playsInline
+    />
+  ) : (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={m.src} alt={alt ?? ""} className="block w-full" loading="lazy" />
+  );
+
+  if (m.frame === "phone") {
+    return (
+      <div className="mx-auto w-full max-w-[300px] overflow-hidden rounded-[34px] border-[7px] border-[#0e0e10] bg-[#0e0e10] shadow-[0_18px_44px_rgba(0,0,0,0.20)]">
+        <div className="overflow-hidden rounded-[27px] bg-white">{inner}</div>
+      </div>
+    );
+  }
+  return (
+    <figure className="overflow-hidden rounded-[16px] border border-edge">
+      {inner}
+    </figure>
+  );
+}
+
+function Caption({ children }: { children: React.ReactNode }) {
+  return (
+    <figcaption
+      className="mt-2 text-center text-[13px] text-faint"
+      style={poppins}
+    >
+      {children}
+    </figcaption>
+  );
+}
+
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
