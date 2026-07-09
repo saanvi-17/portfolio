@@ -594,31 +594,36 @@ export default function Bento() {
   return (
     <footer id="contact" className="bg-paper text-ink">
       <div className="mx-auto max-w-[1040px] px-6 py-16 sm:py-20">
+        {/* Below `sm`, the wrapper divs collapse to `display: contents` so every
+            card becomes a direct item of this grid and can be re-sequenced with
+            `order-*` (mobile order: resume, email, writing, skills, phone,
+            links). At `sm`+ the wrappers become real grids again and `order`
+            resets, so tablet/desktop layout is unchanged. */}
         <div className="grid gap-5 lg:grid-cols-[340fr_640fr]">
           {/* LEFT COLUMN — CTA on top, email below */}
-          <div className="grid gap-5">
+          <div className="contents sm:grid sm:gap-5">
             {/* CTA */}
-            <FolderArticleCard className="min-h-[294px] lg:h-[294px]" />
+            <FolderArticleCard className="min-h-[294px] lg:h-[294px] order-3 sm:order-none" />
 
-            <EmailCard className="lg:h-[290px]" />
+            <EmailCard className="lg:h-[290px] order-2 sm:order-none" />
           </div>
 
           {/* RIGHT CLUSTER */}
-          <div className="grid gap-5">
-            <div className="grid gap-5 sm:grid-cols-[340fr_280fr]">
+          <div className="contents sm:grid sm:gap-5">
+            <div className="contents sm:grid sm:gap-5 sm:grid-cols-[340fr_280fr]">
               {/* middle column: skills pile + resume card */}
-              <div className="grid gap-5">
-                <SkillsCard className="min-h-[240px] lg:h-[270px]" />
-                <ResumeCard className="min-h-[164px] lg:h-[172px]" />
+              <div className="contents sm:grid sm:gap-5">
+                <SkillsCard className="min-h-[240px] lg:h-[270px] order-4 sm:order-none" />
+                <ResumeCard className="min-h-[164px] lg:h-[172px] order-1 sm:order-none" />
               </div>
 
               {/* right tall — tilted phone showcase */}
-              <PhoneShowcase className="min-h-[320px] lg:h-[462px]" />
+              <PhoneShowcase className="min-h-[320px] lg:h-[462px] order-5 sm:order-none" />
             </div>
 
             {/* Socials — image tiles, order per the Figma. Fixed tile sizes
                 (48px mobile / 64px desktop) spread with justify-between. */}
-            <div className={`${CARD} flex items-center justify-between px-2.5 sm:px-8 h-[68px] lg:h-[124px]`}>
+            <div className={`${CARD} flex items-center justify-between px-2.5 sm:px-8 h-[68px] lg:h-[124px] order-6 sm:order-none`}>
               {socials.map((s) => (
                 <a
                   key={s.label}
