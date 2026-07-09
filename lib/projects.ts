@@ -59,6 +59,8 @@ export const projects: Project[] = [
     accent: "bg-accent-rose",
     role: "Design + Build",
     year: "2025",
+    device: "phone",
+    shot: "/work/shots/cove.jpg",
     caseStudy: {
       overview:
         "Cove started as a fix for my own messy wardrobe in the notes app and grew into a real product I designed and built end to end.",

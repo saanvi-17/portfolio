@@ -19,8 +19,8 @@ const poppinsMed = { fontFamily: "var(--font-poppins)", fontWeight: 500 };
 const bricolage = { fontFamily: "var(--font-bricolage)", fontWeight: 600 };
 
 const EMAIL = "saanvijain1999@gmail.com";
-// TODO(Saanvi): link your resume PDF. Placeholder "#" until then.
-const RESUME_URL = "#";
+const RESUME_URL =
+  "https://drive.google.com/file/d/18w2MnzO5IldfkZaWy7guCtWPgilfKmw-/view?usp=sharing";
 
 // Medium posts (newest first, from the RSS feed). Each links to the article.
 const MEDIUM_URL = "https://medium.com/@saanvijain1999";
