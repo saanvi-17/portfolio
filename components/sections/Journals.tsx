@@ -33,7 +33,7 @@ function Face({ src, back }: { src: string; back?: boolean }) {
       }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt="" className="h-full w-full object-cover" />
+      <img key={src} src={src} alt="" className="h-full w-full object-cover" />
     </div>
   );
 }
@@ -50,7 +50,11 @@ function Page({ src, side }: { src: string; side: "left" | "right" }) {
       }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt="" className="h-full w-full object-cover" />
+      {/* key={src} remounts the <img> when the spread changes, so React swaps
+          in a fresh DOM node instead of mutating src on this force-composited
+          layer. That forces the compositor to rasterize a new texture — the
+          stale-first-texture bug came from the old node keeping its cached one. */}
+      <img key={src} src={src} alt="" className="h-full w-full object-cover" />
     </div>
   );
 }
