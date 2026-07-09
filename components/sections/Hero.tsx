@@ -62,7 +62,7 @@ function LampObject() {
         {/* Both bulbs stacked; the .dark class (the same switch that themes the
             whole site) cross-fades lit ↔ unlit, so it can never desync. */}
         <img
-          src="/hero/lamp.png"
+          src="/hero/lamp.webp"
           alt="Table lamp"
           className="transition-opacity duration-300 dark:opacity-0"
           style={{
@@ -75,7 +75,7 @@ function LampObject() {
           }}
         />
         <img
-          src="/hero/off-lamp.png"
+          src="/hero/off-lamp.webp"
           alt=""
           aria-hidden
           className="opacity-0 transition-opacity duration-300 dark:opacity-100"
@@ -104,7 +104,7 @@ const objects: HeroObject[] = [
     d: { cx: 1259.507, cy: 694.337, rot: 0 },
     node: (
       <img
-        src="/hero/notebook.png"
+        src="/hero/notebook.webp"
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
@@ -118,7 +118,7 @@ const objects: HeroObject[] = [
     d: { cx: 122.5, cy: 354.5, rot: 0 },
     node: (
       <img
-        src="/hero/polaroid1_full.png"
+        src="/hero/polaroid1_full.webp"
         alt="Saanvi as a child"
         className="absolute inset-0 h-full w-full object-contain"
       />
@@ -132,7 +132,7 @@ const objects: HeroObject[] = [
     d: { cx: 335.5, cy: 354.5, rot: 0 },
     node: (
       <img
-        src="/hero/polaroid2_full.png"
+        src="/hero/polaroid2_full.webp"
         alt="Saanvi traveling"
         className="absolute inset-0 h-full w-full object-contain"
       />
@@ -155,7 +155,7 @@ const objects: HeroObject[] = [
     node: (
       <div className="absolute inset-0 overflow-hidden">
         <img
-          src="/hero/img16.png"
+          src="/hero/img16.webp"
           alt=""
           style={{
             position: "absolute",
@@ -177,7 +177,7 @@ const objects: HeroObject[] = [
     d: { cx: 1000.045, cy: 329.7, rot: 0 },
     node: (
       <img
-        src="/hero/img18.png"
+        src="/hero/img18.webp"
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
@@ -191,7 +191,7 @@ const objects: HeroObject[] = [
     d: { cx: 1172.32, cy: 385.32, rot: 0 },
     node: (
       <img
-        src="/hero/img21.png"
+        src="/hero/img21.webp"
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
@@ -206,7 +206,7 @@ const objects: HeroObject[] = [
     node: (
       <div className="absolute inset-0 overflow-hidden">
         <img
-          src="/hero/img23.png"
+          src="/hero/img23.webp"
           alt=""
           style={{
             position: "absolute",
@@ -229,7 +229,7 @@ const objects: HeroObject[] = [
     node: (
       <div className="absolute inset-0 overflow-hidden">
         <img
-          src="/hero/img22.png"
+          src="/hero/img22.webp"
           alt=""
           style={{
             position: "absolute",
@@ -252,7 +252,7 @@ const objects: HeroObject[] = [
     node: (
       <div className="absolute inset-0 overflow-hidden">
         <img
-          src="/hero/img19.png"
+          src="/hero/img19.webp"
           alt=""
           style={{
             position: "absolute",
@@ -274,7 +274,7 @@ const objects: HeroObject[] = [
     d: { cx: 117.55, cy: 811.9, rot: 0 },
     node: (
       <img
-        src="/hero/img24.png"
+        src="/hero/img24.webp"
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
@@ -288,7 +288,7 @@ const objects: HeroObject[] = [
     d: { cx: 486, cy: 817, rot: 0 },
     node: (
       <img
-        src="/hero/img1014.png"
+        src="/hero/img1014.webp"
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
@@ -303,7 +303,7 @@ const objects: HeroObject[] = [
     node: (
       <div className="absolute inset-0 overflow-hidden">
         <img
-          src="/hero/img25.png"
+          src="/hero/img25.webp"
           alt=""
           style={{
             position: "absolute",
@@ -338,7 +338,7 @@ const objects: HeroObject[] = [
           }}
         >
           <img
-            src="/hero/airdrop_bg.png"
+            src="/hero/airdrop_bg.webp"
             alt=""
             className="absolute inset-0 h-full w-full object-cover"
             style={{ borderRadius: 16 }}
@@ -355,7 +355,7 @@ const objects: HeroObject[] = [
           }}
         >
           <img
-            src="/hero/airdrop_preview.png"
+            src="/hero/airdrop_preview.webp"
             alt=""
             style={{
               position: "absolute",
@@ -504,7 +504,7 @@ function Toggle({
           }}
         >
           <img
-            src="/hero/book.png"
+            src="/hero/book.webp"
             alt=""
             className="dark:brightness-0 dark:invert"
             style={{
@@ -539,7 +539,7 @@ function Toggle({
           }}
         >
           <img
-            src="/hero/desk.png"
+            src="/hero/desk.webp"
             alt=""
             className="dark:brightness-0 dark:invert"
             style={{
@@ -795,7 +795,7 @@ export default function Hero() {
                   margin: 0,
                 }}
               >
-                She is a Senior Product Designer with 4 years of experience.
+                {"4 years of turning 'ugh' to 'aha'"}
               </p>
             </div>
           </div>
