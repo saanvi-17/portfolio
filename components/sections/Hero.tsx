@@ -20,6 +20,10 @@ type HeroObject = {
   gentleHover?: boolean;
   /** Uniform scale applied to the object (used to shrink desktop nodes for mobile). */
   scale?: number;
+  /** Explicit resting stacking order. Objects otherwise paint by DOM order; set
+   *  this to lift one above later siblings (used mobile-only for the torn-paper
+   *  scrap so it sits above the AirDrop card). Left unset on desktop. */
+  z?: number;
 };
 
 const STAGE_W = 1280;
@@ -422,7 +426,7 @@ function FloatObject({
   return (
     <motion.div
       className="absolute hover:z-[60]"
-      style={{ width: obj.w, height: obj.h }}
+      style={{ width: obj.w, height: obj.h, zIndex: obj.z }}
       initial={false}
       animate={pos}
       transition={spring}
@@ -581,7 +585,9 @@ const mobileObjects: HeroObject[] = [
   mobileObj("img21", 0.695, { cx: 293.85, cy: 404.74, rot: 0.66 }, { cx: 325.19, cy: 280.19, rot: 0 }),
   mobileObj("img19", 0.61, { cx: 351.56, cy: 452.5, rot: 0 }, { cx: 294.56, cy: 182.5, rot: 0 }),
   mobileObj("img16", 0.979, { cx: 71.96, cy: 742.95, rot: 5.44 }, { cx: 50.46, cy: 281.05, rot: 0 }),
-  mobileObj("img25", 1.118, { cx: 66.49, cy: 576.89, rot: -31.3 }, { cx: 207.0, cy: 677.15, rot: -12.73 }),
+  // Torn-paper "definition" scrap. z:50 lifts it above the AirDrop card (which
+  // paints later by DOM order); journal pose nudged up/right toward the polaroids.
+  { ...mobileObj("img25", 1.118, { cx: 71.5, cy: 522, rot: -31.3 }, { cx: 207.0, cy: 677.15, rot: -12.73 }), z: 50 },
   mobileObj("img23", 0.778, { cx: 306.29, cy: 542.96, rot: -8.6 }, { cx: 274.8, cy: 522.5, rot: -5.56 }),
   mobileObj("airdrop", 0.973, { cx: 107.37, cy: 637.07, rot: -0.62 }, { cx: 81.49, cy: 513.73, rot: 0 }),
   mobileObj("img24", 0.73, { cx: 265.71, cy: 635.89, rot: 5.5 }, { cx: 74.66, cy: 706.05, rot: 0 }),
