@@ -105,9 +105,9 @@ export const projects: Project[] = [
           p: "Cove turns a physical wardrobe into a searchable digital diary. It’s live on desktop and mobile.",
         },
 
-        { h: "Where it started" },
+        { h: "Where it Started" },
         {
-          p: "For years, my wardrobe lived in my Notes app. Every time I bought an outfit I liked — or remembered a piece I owned but kept forgetting about — I’d take a photo and drop it into a note. It half-worked. I had the pictures, but no way to search them, organize them, or actually turn them into outfits. The photos piled up and nothing ever came of them.",
+          p: "For years, my wardrobe lived in my Notes app. Every time I bought an outfit I liked or remembered a piece I owned but kept forgetting about , I'd take a photo and drop it into a note. It half-worked. I had the pictures, but no way to search them, organize them, or actually turn them into outfits. The photos piled up and nothing ever came of them.",
         },
         {
           group: [
@@ -118,15 +118,15 @@ export const projects: Project[] = [
           cap: "Scroll each → before: a folder in my Notes app. After: Cove.",
         },
         {
-          p: "With Cove, I photograph a piece once and it’s cut out, catalogued, and ready to style into outfits. I didn’t have to imagine a user — I’d been doing this by hand, badly, for years.",
+          p: "With Cove, I photograph a piece once and it's cut out, catalogued, and ready to style into outfits. I didn't have to imagine a user. I'd been doing this by hand, badly, for years.",
         },
         {
-          p: "I designed and shipped Cove end to end: the product strategy, interaction model, information architecture, design system, and implementation. Claude Code generated production code from my specifications and tickets while I directed architecture, reviewed every implementation, and owned the product from idea to launch.",
+          p: "I designed and shipped Cove end to end. I defined the product strategy, interaction model, information architecture, design system, and implementation. Claude Code generated production code from my specifications and tickets while I directed architecture, reviewed every implementation, and owned the product from idea to launch.",
         },
 
         { h: "The bet" },
         {
-          p: "The real risk here wasn’t technical — it was behavioural. I’d tolerated the friction of the Notes app because it was mine, but no one else would. Most wardrobe apps lose users at the same point: the first few uploads. Ask someone to photograph, crop, and label forty items, and you’ll lose them by item three.",
+          p: "The real risk here wasn't technical. It was behavioural. I'd tolerated the friction of the Notes app because it was mine, but no one else would. Most wardrobe apps lose users at the same point: the first few uploads. Ask someone to photograph, crop, and label forty items, and you'll lose them by item three.",
         },
         { p: "So I designed the product around a single question:" },
         { quote: "How quickly can one garment go from hanger to catalogued?" },
@@ -141,7 +141,7 @@ export const projects: Project[] = [
         },
         { sub: "A diary, not a filing cabinet" },
         {
-          p: "Pieces accumulate in a searchable, filterable stream instead of a hierarchy of folders. Organization is the app’s responsibility, not the user’s.",
+          p: "Pieces accumulate in a searchable, filterable stream instead of a hierarchy of folders.",
         },
         {
           p: "To support both browsing and retrieval, I introduced category filters that let users quickly explore their wardrobe by garment type while keeping the diary-like experience intact.",
@@ -153,7 +153,20 @@ export const projects: Project[] = [
         {
           p: "Instead of relying on an ML recommendation model, I chose transparent rules so users always understand why an outfit was suggested.",
         },
-        { sub: "What I cut" },
+        {
+          img: "/work/cove/style-rules.webp",
+          cap: "Style Rules — transparent constraints the outfit builder follows.",
+        },
+        {
+          group: [
+            { src: "/work/cove/empty-state.webp", frame: "phone" },
+            { src: "/work/cove/diary.webp", frame: "phone" },
+            { src: "/work/cove/outfit.webp", frame: "phone" },
+          ],
+          cap: "The empty state, the diary stream (filtered), and the outfit generator.",
+        },
+
+        { h: "Iterations" },
         {
           p: "My first version treated every upload like a form. Users named garments, assigned categories, occasions, and processing options before saving. After living with the product, I realized every extra decision slowed the one thing Cove needed to optimize: getting clothes into the wardrobe. I simplified the flow to capture first and let the product organize everything else.",
         },
@@ -161,7 +174,6 @@ export const projects: Project[] = [
           img: "/work/cove/iteration.webp",
           cap: "The first version — every upload was a form.",
         },
-        // ④ empty state · diary stream · outfit generator (group of 3)
 
         { h: "The architecture decision" },
         { p: "Background removal became the core technical challenge." },
@@ -184,13 +196,17 @@ export const projects: Project[] = [
         {
           quote: "The design absorbs the imperfections so the user never has to notice them.",
         },
-        // ⑤ wardrobe grid — consistent cards (phone)
+        {
+          img: "/work/cove/remove-bg.webp",
+        },
 
         { h: "The systems layer" },
         {
           p: "I built a reusable design system covering typography, spacing, motion, color tokens, and shared components across desktop and mobile. Although created for a single product, the system was designed with the same scalability principles I’d apply when building design systems inside a larger organization.",
         },
-        // ⑥ design tokens / component set (full-width Figma board)
+        { img: "/work/cove/ds-1.webp" },
+        { img: "/work/cove/ds-2.webp" },
+        { img: "/work/cove/ds-3.webp" },
 
         { h: "Where it stands" },
         {
