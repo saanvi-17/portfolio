@@ -644,6 +644,32 @@ export default function Bento() {
           </div>
         </div>
 
+        {/* Featured-on badge — official Wall of Portfolios mark (dark badge in
+            light mode, white badge in dark mode), links out. */}
+        <div className="mt-10 flex justify-center sm:justify-end">
+          <a
+            href="https://www.wallofportfolios.in/portfolios/saanvi-jain/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Featured on Wall of Portfolios"
+            className="inline-block transition-transform duration-300 hover:-translate-y-0.5"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/badges/wop-featured-black.svg"
+              alt="Featured on Wall of Portfolios"
+              className="h-12 w-auto dark:hidden"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/badges/wop-featured-white.svg"
+              alt=""
+              aria-hidden
+              className="hidden h-12 w-auto dark:block"
+            />
+          </a>
+        </div>
+
         {/* Copyright — the very bottom */}
         <div
           className="mt-10 flex flex-col justify-between gap-2 border-t border-hair pt-6 text-[13px] text-soft2 sm:flex-row"
