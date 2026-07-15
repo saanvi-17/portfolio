@@ -20,7 +20,7 @@ const bricolage = { fontFamily: "var(--font-bricolage)", fontWeight: 600 };
 
 const EMAIL = "saanvijain1999@gmail.com";
 const RESUME_URL =
-  "https://drive.google.com/file/d/18w2MnzO5IldfkZaWy7guCtWPgilfKmw-/view?usp=sharing";
+  "https://drive.google.com/file/d/1IgT3-5gm4Vfm2dUW5_O6YYdhkF3TA0ZJ/view?usp=sharing";
 
 // Medium posts (newest first, from the RSS feed). Each links to the article.
 const MEDIUM_URL = "https://medium.com/@saanvijain1999";
