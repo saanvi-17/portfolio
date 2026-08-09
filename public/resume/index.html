@@ -351,6 +351,19 @@ ul.bullets b { font-weight: 600; }
 }
 
 /* Project title row */
+/* Little link glyph marking the projects that open a live product. */
+.link-ico {
+  display: inline-block;
+  width: 2.9mm;
+  height: 2.9mm;
+  margin-right: 1.1mm;
+  vertical-align: -0.2mm;
+  fill: none;
+  stroke: var(--clay);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
 .proj-title {
   font-family: var(--font-display);
   font-weight: 700;
@@ -417,15 +430,6 @@ ul.bullets b { font-weight: 600; }
   font-size: 9.5pt;
   line-height: 1.1;
   padding-top: 0.4mm;
-}
-.sign {
-  font-family: var(--font-hand);
-  font-size: 11pt;
-  line-height: 1.25;
-  color: var(--muted);
-  align-self: flex-end;
-  padding-bottom: 1mm;
-  transform: rotate(-1.5deg);
 }
 
 /* ── Idle float on a couple of pieces ─────────────────────── */
@@ -641,7 +645,6 @@ ul.bullets b { font-weight: 600; }
           <img src="/resume/assets/qr-linkedin.svg" alt="QR code linking to Saanvi Jain's LinkedIn" />
           <span>linkedin</span>
         </a>
-        <p class="sign">← the case studies<br />live over here</p>
       </div>
     </div>
 
@@ -651,7 +654,7 @@ ul.bullets b { font-weight: 600; }
 
       <section class="note green">
         <h2 class="proj-title">
-          <a href="https://heurist-indol.vercel.app/" target="_blank" rel="noopener noreferrer">Heurist — AI Growth Copilot</a><br />
+          <a href="https://heurist-indol.vercel.app/" target="_blank" rel="noopener noreferrer"><svg class="link-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>Heurist — AI Growth Copilot</a><br />
           <span class="kind">UX &amp; AI workflow design</span>
         </h2>
         <ul class="bullets">
@@ -662,7 +665,7 @@ ul.bullets b { font-weight: 600; }
 
       <section class="note sand">
         <h2 class="proj-title">
-          <a href="https://cove-demo-three.vercel.app/" target="_blank" rel="noopener noreferrer">Cove — AI wardrobe app</a><br />
+          <a href="https://cove-demo-three.vercel.app/" target="_blank" rel="noopener noreferrer"><svg class="link-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>Cove — AI wardrobe app</a><br />
           <span class="kind">Solo designer &amp; builder</span>
         </h2>
         <ul class="bullets">
