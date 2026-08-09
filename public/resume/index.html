@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Saanvi Jain — Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Poppins:wght@400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+
+<style>
+/* ─────────────────────────────────────────────────────────────
+   Tokens — lifted from the portfolio's app/globals.css :root so
+   the resume and saanvijain.xyz stay in sync by construction.
+   Sticker colours come from public/bento/resume/*.svg.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --paper:      #f4efe6;  /* warm cream — the "desk" */
+  --ink:        #2b2722;  /* dark espresso */
+  --muted:      #6f675c;  /* secondary text */
+  --line:       #e3dccd;  /* grid / hairline */
+  --card:       #fffdf8;  /* note paper */
+
+  --terracotta: #e08a4b;
+  --clay:       #c96f4a;
+  --olive:      #6b7a4f;
+  --sage:       #aeb88c;
+
+  /* pale note tints */
+  --tint-rose:  #fdeef0;
+  --tint-green: #eef4ef;
+  --tint-blue:  #eef0f6;
+  --tint-sand:  #f3f1ea;
+
+  /* saturated sticker palette (from the bento resume stickers) */
+  --st-yellow:  #f9e080;
+  --st-pink:    #e9a6d2;
+  --st-peach:   #f0c0ae;
+  --st-gold:    #e2b23a;
+
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Poppins", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-hand: "Caveat", "Bradley Hand", cursive;
+
+  --shadow-note: 0 1.2mm 2.6mm rgba(43, 39, 34, 0.13);
+  --shadow-lift: 0 2.4mm 5mm rgba(43, 39, 34, 0.19);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #ded5c6;
+  font-family: var(--font-body);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  justify-content: center;
+  padding: 10mm 4mm 26mm;
+}
+
+/* ── The A4 sheet ─────────────────────────────────────────── */
+.page {
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  flex: none;
+  padding: 10mm 11mm 8mm;
+  background-color: var(--paper);
+  /* faint grid-paper backdrop, same recipe as .grid-paper on the site */
+  background-image:
+    linear-gradient(var(--line) 0.25mm, transparent 0.25mm),
+    linear-gradient(90deg, var(--line) 0.25mm, transparent 0.25mm);
+  background-size: 8mm 8mm;
+  background-position: center top;
+  box-shadow: 0 6mm 18mm rgba(43, 39, 34, 0.26);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4.5mm;
+}
+
+/* ── Collage furniture: tape, pins, doodles ───────────────── */
+
+/* A torn strip of washi tape. Rotate/position per use. */
+.tape {
+  position: absolute;
+  width: 17mm;
+  height: 5mm;
+  background: rgba(249, 224, 128, 0.78);
+  clip-path: polygon(3% 0, 100% 6%, 97% 100%, 0 94%);
+  z-index: 4;
+  pointer-events: none;
+}
+.tape.pink  { background: rgba(233, 166, 210, 0.62); }
+.tape.peach { background: rgba(240, 192, 174, 0.72); }
+.tape.sage  { background: rgba(174, 184, 140, 0.6); }
+
+/* Tape across the top edge of a note, centred. */
+.tape-top {
+  top: -2.2mm;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2.5deg);
+}
+
+/* Pushpin — a little domed head with a highlight. */
+.pin {
+  position: absolute;
+  width: 5.2mm;
+  height: 5.2mm;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 30%, #ffffff9c 0 12%, transparent 42%),
+    radial-gradient(circle at 62% 68%, var(--clay), var(--terracotta));
+  box-shadow: 0 0.7mm 1.4mm rgba(43, 39, 34, 0.4);
+  z-index: 6;
+}
+.pin::after { /* the needle catching light under the head */
+  content: "";
+  position: absolute;
+  left: 52%;
+  top: 78%;
+  width: 0.7mm;
+  height: 2mm;
+  background: rgba(43, 39, 34, 0.32);
+  border-radius: 0 0 1mm 1mm;
+}
+
+.doodle {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+.head {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34mm 1fr 58mm;
+  gap: 6mm;
+  align-items: start;
+  min-height: 44mm;
+}
+
+/* Pinned polaroid */
+.polaroid {
+  position: relative;
+  background: #fff;
+  padding: 1.8mm 1.8mm 5.5mm;
+  box-shadow: var(--shadow-note);
+  transform: rotate(-4deg);
+  transform-origin: 50% 0;
+  animation: float 5.5s ease-in-out infinite;
+}
+.polaroid img {
+  display: block;
+  width: 100%;
+  height: 32mm;
+  object-fit: cover;
+  object-position: center 28%;
+}
+.polaroid .caption {
+  font-family: var(--font-hand);
+  font-size: 11pt;
+  line-height: 1;
+  text-align: center;
+  color: var(--muted);
+  padding-top: 1.4mm;
+}
+.polaroid .pin { top: -2.6mm; left: 50%; margin-left: -2.6mm; }
+
+/* Name block */
+.identity { padding-top: 3mm; }
+.hi {
+  font-family: var(--font-hand);
+  font-size: 15pt;
+  line-height: 1;
+  color: var(--clay);
+  transform: rotate(-2deg);
+  display: inline-block;
+  margin-bottom: 0.5mm;
+}
+.name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 33pt;
+  line-height: 0.92;
+  letter-spacing: -0.015em;
+}
+.name .last { color: var(--clay); }
+.role-tag {
+  display: inline-block;
+  margin-top: 2.4mm;
+  padding: 1.1mm 4mm;
+  background: var(--st-yellow);
+  border: 0.4mm solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 1.1mm 1.1mm 0 var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 9.5pt;
+  letter-spacing: 0.04em;
+  transform: rotate(-1.5deg);
+}
+
+/* Contact card, taped into the corner like the reference's envelope */
+.contact {
+  position: relative;
+  background: var(--card);
+  border: 0.3mm solid #e6ddcc;
+  padding: 4.5mm 4mm 3.6mm;
+  box-shadow: var(--shadow-note);
+  transform: rotate(1.8deg);
+}
+.contact .lets {
+  position: absolute;
+  right: 3mm;
+  bottom: -4.5mm;
+  font-family: var(--font-hand);
+  font-size: 13pt;
+  color: var(--clay);
+  transform: rotate(-4deg);
+}
+.contact ul { list-style: none; display: grid; gap: 1.5mm; }
+.contact li {
+  display: flex;
+  align-items: center;
+  gap: 2mm;
+  font-size: 7.8pt;
+  line-height: 1.25;
+}
+.contact svg { flex: none; width: 3.3mm; height: 3.3mm; stroke: var(--clay); }
+.contact a { color: var(--ink); text-decoration: none; border-bottom: 0.2mm solid var(--line); }
+.contact a:hover { border-bottom-color: var(--clay); }
+
+/* ── Summary strip ────────────────────────────────────────── */
+.summary {
+  position: relative;
+  background: var(--tint-sand);
+  padding: 3.4mm 5mm;
+  box-shadow: var(--shadow-note);
+  transform: rotate(-0.5deg);
+  font-size: 8.2pt;
+  line-height: 1.45;
+}
+.summary b { font-weight: 600; color: var(--clay); }
+
+/* ── Two-column body ──────────────────────────────────────── */
+.cols {
+  display: grid;
+  grid-template-columns: 1.44fr 1fr;
+  gap: 7mm;
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
+}
+.col { display: flex; flex-direction: column; gap: 4mm; }
+
+/* Section label — the reference's outlined oval badge, in her palette */
+.label {
+  align-self: flex-start;
+  display: inline-block;
+  padding: 1.2mm 4.5mm;
+  border: 0.4mm solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 1mm 1mm 0 var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 8.8pt;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  transform: rotate(-1.8deg);
+}
+.label.yellow { background: var(--st-yellow); }
+.label.peach  { background: var(--st-peach); }
+.label.pink   { background: var(--st-pink); }
+.label.sage   { background: var(--sage); }
+
+/* Sticky note */
+.note {
+  position: relative;
+  padding: 3.6mm 4mm 3.4mm;
+  box-shadow: var(--shadow-note);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.note.sand  { background: var(--tint-sand); }
+.note.rose  { background: var(--tint-rose); }
+.note.blue  { background: var(--tint-blue); }
+.note.green { background: var(--tint-green); }
+.note:nth-of-type(odd)  { transform: rotate(-0.55deg); }
+.note:nth-of-type(even) { transform: rotate(0.5deg); }
+.note:hover {
+  transform: rotate(0deg) translateY(-1mm);
+  box-shadow: var(--shadow-lift);
+}
+
+/* Role / project heading rows */
+.job-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 3mm;
+  margin-bottom: 1.4mm;
+}
+.job-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 9.4pt;
+  line-height: 1.15;
+}
+.job-title .at { font-weight: 600; color: var(--clay); }
+.job-when {
+  flex: none;
+  font-family: var(--font-hand);
+  font-size: 11pt;
+  line-height: 1;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.job-intro {
+  font-size: 7.6pt;
+  line-height: 1.42;
+  color: var(--muted);
+  margin-bottom: 1.6mm;
+}
+
+/* Bullets — a hand-drawn dash rather than a disc */
+ul.bullets { list-style: none; display: grid; gap: 1.3mm; }
+ul.bullets li {
+  position: relative;
+  padding-left: 3.4mm;
+  font-size: 7.6pt;
+  line-height: 1.4;
+}
+ul.bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.55mm;
+  width: 2mm;
+  height: 0.45mm;
+  background: var(--st-gold);
+  border-radius: 1mm;
+}
+ul.bullets b { font-weight: 600; }
+/* Metric highlighter — a felt-tip swipe behind the number */
+.hl {
+  font-weight: 600;
+  background: linear-gradient(transparent 18%, rgba(249, 224, 128, 0.85) 18%, rgba(249, 224, 128, 0.85) 92%, transparent 92%);
+  padding: 0 0.6mm;
+}
+
+/* Project title row */
+.proj-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 8.8pt;
+  line-height: 1.2;
+  margin-bottom: 1.4mm;
+}
+.proj-title .kind { font-weight: 600; font-size: 7.6pt; color: var(--clay); }
+.proj-title a { color: inherit; text-decoration: none; border-bottom: 0.3mm solid var(--st-gold); }
+
+/* Skills + tools */
+.kv { font-size: 7.6pt; line-height: 1.5; }
+.kv .k {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 7.8pt;
+  color: var(--clay);
+}
+.chips { display: flex; flex-wrap: wrap; gap: 1.5mm; margin-top: 2.2mm; }
+.chip {
+  padding: 0.8mm 2.4mm;
+  border-radius: 0.8mm;
+  background: rgba(249, 224, 128, 0.8);
+  font-size: 7.2pt;
+  font-weight: 500;
+  line-height: 1.3;
+  clip-path: polygon(2% 0, 100% 4%, 98% 100%, 0 96%);
+}
+.chip:nth-child(3n+2) { background: rgba(240, 192, 174, 0.85); }
+.chip:nth-child(3n+3) { background: rgba(233, 166, 210, 0.6); }
+
+/* Education */
+.edu-school {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 8.8pt;
+  line-height: 1.2;
+}
+.edu-line { font-size: 7.6pt; line-height: 1.45; color: var(--muted); margin-top: 0.6mm; }
+
+/* QR footer */
+.qr-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 4mm;
+  margin-top: auto;
+  padding-top: 2mm;
+}
+.qr {
+  position: relative;
+  background: #fff;
+  padding: 1.4mm 1.4mm 0.8mm;
+  box-shadow: var(--shadow-note);
+  text-align: center;
+  text-decoration: none;
+  color: var(--muted);
+  transform: rotate(-2.5deg);
+}
+.qr:nth-child(2) { transform: rotate(2deg); }
+.qr img { display: block; width: 16mm; height: 16mm; }
+.qr span {
+  display: block;
+  font-family: var(--font-hand);
+  font-size: 9.5pt;
+  line-height: 1.1;
+  padding-top: 0.4mm;
+}
+.sign {
+  font-family: var(--font-hand);
+  font-size: 11pt;
+  line-height: 1.25;
+  color: var(--muted);
+  align-self: flex-end;
+  padding-bottom: 1mm;
+  transform: rotate(-1.5deg);
+}
+
+/* ── Idle float on a couple of pieces ─────────────────────── */
+@keyframes float {
+  0%, 100% { transform: rotate(-4deg) translateY(0); }
+  50%      { transform: rotate(-4deg) translateY(-1.2mm); }
+}
+@keyframes floatDoodle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-1.5mm) rotate(6deg); }
+}
+.doodle.drift { animation: floatDoodle 6s ease-in-out infinite; }
+.doodle.drift.slow { animation-duration: 7.5s; animation-delay: -2s; }
+
+/* ── Print: this is the bit that makes it a real resume ───── */
+@page { size: A4; margin: 0; }
+
+@media print {
+  html, body {
+    background: #fff;
+    padding: 0;
+    margin: 0;
+    width: 210mm;
+  }
+  body { display: block; }
+  .page {
+    width: 210mm;
+    height: 297mm;
+    box-shadow: none;
+    page-break-after: avoid;
+    break-inside: avoid;
+  }
+  .note, .polaroid, .contact, .summary { break-inside: avoid; }
+  .print-btn { display: none !important; }
+  .note:hover { transform: none; box-shadow: var(--shadow-note); }
+  /* keep the cream paper, tape and sticky notes in the PDF */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    animation: none !important;
+  }
+  .polaroid { transform: rotate(-4deg); }
+}
+
+/* ── Screen affordance ────────────────────────────────────── */
+.print-btn {
+  position: fixed;
+  right: 6mm;
+  bottom: 6mm;
+  z-index: 50;
+  padding: 3mm 6mm;
+  border: none;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 10pt;
+  cursor: pointer;
+  box-shadow: 0 2mm 6mm rgba(43, 39, 34, 0.35);
+  transition: transform 0.2s ease;
+}
+.print-btn:hover { transform: translateY(-1mm); }
+
+/* ── Small screens: drop the A4 canvas, keep the collage ──── */
+@media screen and (max-width: 820px) {
+  body { padding: 4mm 3mm 22mm; }
+  .page {
+    width: 100%;
+    height: auto;
+    padding: 8mm 6mm 10mm;
+  }
+  .head { grid-template-columns: 30mm 1fr; }
+  .contact { grid-column: 1 / -1; }
+  .cols { grid-template-columns: 1fr; gap: 5mm; }
+  .name { font-size: 27pt; }
+  .doodle, .tape:not(.tape-top) { display: none; }
+  .qr-row { margin-top: 2mm; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .polaroid { transform: rotate(-4deg); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- ── decorative collage furniture ─────────────────────── -->
+  <img class="doodle drift" src="/resume/assets/star.svg" alt="" aria-hidden="true"
+       style="width:5.5mm;height:5.5mm;left:96mm;top:6mm;" />
+  <img class="doodle drift slow" src="/resume/assets/heart.svg" alt="" aria-hidden="true"
+       style="width:5mm;height:4.6mm;left:186mm;top:64mm;" />
+  <img class="doodle" src="/resume/assets/squiggle.svg" alt="" aria-hidden="true"
+       style="width:15mm;height:4.6mm;left:90mm;top:40mm;transform:rotate(-4deg);" />
+  <img class="doodle" src="/resume/assets/fold-pink.svg" alt="" aria-hidden="true"
+       style="width:4mm;height:4mm;left:6mm;top:150mm;transform:rotate(12deg);" />
+  <img class="doodle" src="/resume/assets/fold-cream.svg" alt="" aria-hidden="true"
+       style="width:4.4mm;height:4.4mm;left:200mm;top:210mm;transform:rotate(-20deg);" />
+
+  <!-- ── header ───────────────────────────────────────────── -->
+  <header class="head">
+
+    <div class="polaroid">
+      <span class="pin" aria-hidden="true"></span>
+      <img src="/resume/assets/portrait.jpg" alt="Saanvi Jain" />
+      <div class="caption">that's me!</div>
+    </div>
+
+    <div class="identity">
+      <div class="hi">Hi, I'm</div>
+      <h1 class="name">Saanvi <span class="last">Jain</span></h1>
+      <div class="role-tag">Product Designer</div>
+    </div>
+
+    <div class="contact">
+      <span class="tape tape-top peach" aria-hidden="true"></span>
+      <ul>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>
+          <a href="https://saanvijain.xyz" target="_blank" rel="noopener noreferrer">saanvijain.xyz</a>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2.5 2.5 0 0 1 5 0v4"/></svg>
+          <a href="https://www.linkedin.com/in/saanvi-jain/" target="_blank" rel="noopener noreferrer">linkedin.com/in/saanvi-jain</a>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg>
+          <a href="tel:+919811430585">+91 98114 30585</a>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          <a href="mailto:saanvijain1999@gmail.com">saanvijain1999@gmail.com</a>
+        </li>
+      </ul>
+      <span class="lets">let's talk!</span>
+    </div>
+
+  </header>
+
+  <!-- ── summary ──────────────────────────────────────────── -->
+  <p class="summary">
+    <span class="tape tape-top" aria-hidden="true" style="left:16mm;"></span>
+    <b>4 years</b> across D2C commerce and B2B SaaS. I design and optimize digital
+    products using research, experimentation, analytics, and rapid prototyping —
+    to solve real user problems and drive measurable business outcomes.
+  </p>
+
+  <!-- ── body ─────────────────────────────────────────────── -->
+  <div class="cols">
+
+    <!-- left column: experience -->
+    <div class="col">
+      <span class="label yellow">Work Experience</span>
+
+      <section class="note sand">
+        <div class="job-head">
+          <h2 class="job-title">Senior Product Designer<br /><span class="at">Be Bodywise · Mosaic Wellness</span></h2>
+          <span class="job-when">Oct 2024 — now</span>
+        </div>
+        <p class="job-intro">
+          Shipped 100+ product initiatives across web and app, including experiences
+          for Be Bodywise's 3M+ monthly users.
+        </p>
+        <ul class="bullets">
+          <li>Led a six-initiative redesign of the shopping journey, increasing Shop → Cart conversion by <span class="hl">30%</span> and categories explored per user by <span class="hl">40%</span>.</li>
+          <li>Used Mixpanel analytics, user research, and Webflow prototypes to redesign the hero-SKU PDP, increasing conversion from <span class="hl">4% → 7.3%</span>. Later applied the learnings to the Shopify PDP revamp, using <b>AI-assisted coding</b>.</li>
+          <li>Designed and launched the Little Joys referral program, <span class="hl">doubling referring users</span> and increasing sign-up conversion by <span class="hl">44%</span>.</li>
+          <li>Launched a motion-driven Deal of the Day experience, increasing homepage hero CTR from <span class="hl">6–10% to 20%</span>.</li>
+          <li>Established the visual identity system with reusable components and patterns adopted across brands.</li>
+        </ul>
+      </section>
+
+      <section class="note blue">
+        <div class="job-head">
+          <h2 class="job-title">Product Designer<br /><span class="at">Auzmor</span></h2>
+          <span class="job-when">Nov 2022 — Sep 2024</span>
+        </div>
+        <p class="job-intro">
+          Designed enterprise B2B SaaS products including Auzmor Office, Learn (LXP),
+          and Freshflows — partnering with PMs and engineers across onboarding,
+          administration, communication, and workflow experiences.
+        </p>
+        <ul class="bullets">
+          <li>Designed Auzmor Office from <b>0→1</b>, defining information architecture, onboarding, activity feeds and people-hub workflows while embedding analytics and feedback loops from day one.</li>
+          <li>Built the Learn Experience Platform (LXP), improving product adoption and customer onboarding by <span class="hl">25%</span>.</li>
+          <li>Created rapid interactive prototypes for enterprise sales, helping increase customer acquisition by <span class="hl">19%</span>.</li>
+        </ul>
+      </section>
+
+      <section class="note rose">
+        <div class="job-head">
+          <h2 class="job-title">Software Engineer<br /><span class="at">Sopra Steria</span></h2>
+          <span class="job-when">Sep 2021 — May 2022</span>
+        </div>
+        <ul class="bullets">
+          <li>ETL developer — built and optimized data integration jobs and routes with Talend DI and Talend ESB.</li>
+        </ul>
+      </section>
+
+      <div class="qr-row">
+        <a class="qr" href="https://saanvijain.xyz" target="_blank" rel="noopener noreferrer">
+          <img src="/resume/assets/qr-site.svg" alt="QR code linking to saanvijain.xyz" />
+          <span>portfolio</span>
+        </a>
+        <a class="qr" href="https://www.linkedin.com/in/saanvi-jain/" target="_blank" rel="noopener noreferrer">
+          <img src="/resume/assets/qr-linkedin.svg" alt="QR code linking to Saanvi Jain's LinkedIn" />
+          <span>linkedin</span>
+        </a>
+        <p class="sign">← the case studies<br />live over here</p>
+      </div>
+    </div>
+
+    <!-- right column: projects, skills, education -->
+    <div class="col">
+      <span class="label peach">Projects</span>
+
+      <section class="note green">
+        <h2 class="proj-title">
+          <a href="https://heurist-indol.vercel.app/" target="_blank" rel="noopener noreferrer">Heurist — AI Growth Copilot</a><br />
+          <span class="kind">UX &amp; AI workflow design</span>
+        </h2>
+        <ul class="bullets">
+          <li>Designed and shipped an AI product that reviews live product pages and generates annotated UX audits with prioritized growth experiments.</li>
+          <li>Translated my CRO and experimentation methodology into an AI evaluation framework — trust heuristics, six diagnostic dimensions, and impact × effort × confidence prioritization.</li>
+        </ul>
+      </section>
+
+      <section class="note sand">
+        <h2 class="proj-title">
+          <a href="https://cove-demo-three.vercel.app/" target="_blank" rel="noopener noreferrer">Cove — AI wardrobe app</a><br />
+          <span class="kind">Solo designer &amp; builder</span>
+        </h2>
+        <ul class="bullets">
+          <li>Designed and built an AI-native wardrobe app using Claude Code, owning product strategy, UX, and implementation.</li>
+          <li>Built AI-powered experiences for wardrobe organization, background removal, outfit planning, and digitization.</li>
+        </ul>
+      </section>
+
+      <span class="label pink">Skills &amp; Tools</span>
+
+      <section class="note blue">
+        <p class="kv">
+          <span class="k">Skills —</span>
+          Product Strategy · AI Product Design · Design Systems · UX Research ·
+          Information Architecture · Interaction Design · Prototyping ·
+          Experimentation · Product Analytics
+        </p>
+        <div class="chips">
+          <span class="chip">Figma</span>
+          <span class="chip">Mixpanel</span>
+          <span class="chip">Shopify</span>
+          <span class="chip">Webflow</span>
+          <span class="chip">Framer</span>
+          <span class="chip">Cursor</span>
+          <span class="chip">Claude Code</span>
+          <span class="chip">Jira</span>
+        </div>
+      </section>
+
+      <span class="label sage">Education</span>
+
+      <section class="note sand">
+        <h2 class="edu-school">Indraprastha University</h2>
+        <p class="edu-line">B.Tech, Information Technology — 82%</p>
+        <p class="edu-line">2017 — 2021 · Delhi</p>
+      </section>
+    </div>
+
+  </div>
+</div>
+
+<button class="print-btn" onclick="window.print()">Save as PDF</button>
+
+</body>
+</html>
